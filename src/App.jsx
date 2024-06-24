@@ -1,25 +1,27 @@
 import { toast } from "react-toastify";
 import "./App.css";
-import axios from "./config/axios";
 import { toastOptions } from "./constants/toastOptions";
-import { getAllProducts } from "./constants/apiEndpoints";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { saveProductList } from "./redux/slices/productReducer";
 import { getProducts } from "./helpers/fetchProducts";
 
 function App() {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchAllProducts = async () => {
     try {
+      setIsLoading(true);
       const response = await getProducts();
       if (response.length > 0) {
         dispatch(saveProductList(response));
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("-----> err", error.message);
       toast.error("Something went wrong", toastOptions);
+      setIsLoading(false);
     }
   };
 
@@ -33,7 +35,7 @@ function App() {
         <p className="py-6">
           Welcome to the FakeStore! this store is made for as an assignment
           submission for MyIndiaa, Hope you guys like it, please feel free to
-          shop non stop here! XD
+          shop non stop here! Lol.
         </p>
         <a
           className="bg-teal-400 p-4 rounded-full hover:bg-teal-500 duration-300 transition-all"

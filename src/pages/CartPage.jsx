@@ -1,11 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import QuantityCounter from "../components/QuantityCounter/QuantityCounter"; // Adjust the import path
+import QuantityCounter from "../components/QuantityCounter/QuantityCounter";
 
 const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.items);
 
-  // Calculate the total amount
   const totalAmount = cartItems
     .reduce((total, item) => total + item.price * item.qty, 0)
     .toFixed(2);

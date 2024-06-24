@@ -29,6 +29,40 @@ const router = createBrowserRouter([
   },
 ]);
 
+// Define a function to show install prompt
+function showInstallPrompt() {
+  const installButton = document.createElement("button");
+  installButton.textContent = "Install App";
+  installButton.style.background = "blue";
+  installButton.style.color = "white";
+  installButton.style.border = "none";
+  installButton.style.padding = "10px 20px";
+  installButton.style.cursor = "pointer";
+  installButton.style.position = "fixed";
+  installButton.style.bottom = "20px";
+  installButton.style.right = "20px";
+  installButton.addEventListener("click", () => {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("User accepted the install prompt");
+      } else {
+        console.log("User dismissed the install prompt");
+      }
+      deferredPrompt = null;
+    });
+  });
+
+  document.body.appendChild(installButton);
+}
+
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallPrompt(); // Function to show your custom installation prompt
+});
 root.render(
   <React.StrictMode>
     <Provider store={store}>
